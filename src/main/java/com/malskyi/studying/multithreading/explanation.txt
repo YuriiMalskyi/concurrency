@@ -1,0 +1,36 @@
+There are 3 main concurrency models:
+1. Parallel workers
+In the parallel workers concurrency model a delegator distributes the incoming jobs to different workers.
+Each worker completes the full job. The workers work in parallel, running in different threads, and possibly on different CPUs.
+
+If the parallel workers model was implemented in a car factory, each car would be produced by one worker.
+The worker would get the specification of the car to build, and would build everything from start to end.
+
+Pros:
+- easy to understand
+- easy to scale - just add more workers
+Cons:
+- shared state can get complex
+- part of parallelization is lost when accessing shared data
+- blocking IO will block the workers
+- job order is nondeterministic - there is no way to guarantee which jobs are executed first or last.
+Job A may be given to a worker before job B, yet job B may be executed before job A.
+
+
+
+2. Assembly line - when each worker has it's own dedicated task
+
+Pros:
+- no shared state
+- worker can be stateful, as it is the only one who handles particular phase of a job
+- Better Hardware Conformity
+- deterministic / job ordering
+- we can reduce bottlenecks in some of the places
+Cons:
+- more complex, as we have a lot of classes and callback places
+
+3. Functional Parallelism - everything is a function, thus can be parallelized
+Pros:
+- no shared state
+Cons:
+- hard to implement, meaning it is hard to apply parallelism in some cases
